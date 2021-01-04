@@ -67,6 +67,12 @@ class OCAPISettings {
                 return
             }
 
+            // Register GA event, don't send specific instance details, only the API details for metrics purpose
+            registerEvent('search', {
+                api,
+                apiVersion
+            })
+
             this.$cache.apiForm.button.attr('disabled', true)
             this.$cache.spinnerApiForm.show()
 
@@ -108,6 +114,8 @@ class OCAPISettings {
         })
 
         this.$cache.copyToClipboardBtn.on('click', e => {
+            // Register GA event
+            registerEvent('copy', {})
             navigator.clipboard.writeText(this.$cache.ocapiSettingsTextarea.val())
         })
 
@@ -135,6 +143,9 @@ class OCAPISettings {
                 this.$cache.apiTree.find('[role="treeitem"]:visible .slds-checkbox input[type="checkbox"]').prop('checked', true)
             }
 
+            // Register GA event
+            registerEvent('alltoggle', {})
+
             this.handleCheckboxChange(this.$cache.apiTree)
             $target.toggleClass('slds-is-pressed')
             $target.prop('aria-pressed', $target.hasClass('slds-is-pressed'))
@@ -159,6 +170,9 @@ class OCAPISettings {
                 this.upsertOcapiSettings(clientObj)
                 this.fillOcapiSettingsTextArea()
             }
+
+            // Register GA event
+            registerEvent('wildcardtoggle', {})
 
             $target.toggleClass('slds-is-pressed')
             $target.prop('aria-pressed', $target.hasClass('slds-is-pressed'))
@@ -189,12 +203,17 @@ class OCAPISettings {
      * @params {Object} $this
      **/
     filterTree($this) {
-        var val = $this.val().toLowerCase();
+        var value = $this.val().toLowerCase();
         var treeSelector = '#' + $this.attr('aria-controls');
 
+        // Register GA event
+        registerEvent('filter', {
+            value
+        })
+
         this.removeMarkupFromTree(treeSelector);
-        if (val.length > 1) {
-            this.searchInTree(treeSelector, val);
+        if (value.length > 1) {
+            this.searchInTree(treeSelector, value);
         }
     }
 
@@ -432,6 +451,14 @@ class OCAPISettings {
 
     async performRequest(url, options) {
         return await fetch(url, options).then(response => response.json());
+    }
+
+    registerEvent(eventName, eventData) {
+        if (typeof gtag === 'undefined') {
+            return;
+        }
+
+        gtag(eventName, eventData);
     }
 }
 
