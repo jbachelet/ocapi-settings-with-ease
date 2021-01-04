@@ -18,6 +18,18 @@
             display: inline-block;
         }
     </style>
+
+    <% if (typeof googleAnalyticsTagID !== 'undefined') { %>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<%= googleAnalyticsTagID %>"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '<%= googleAnalyticsTagID %>');
+        </script>
+    <% } %>
 </head>
 <body>
     <div class="slds-scope">
