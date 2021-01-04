@@ -68,7 +68,7 @@ class OCAPISettings {
             }
 
             // Register GA event, don't send specific instance details, only the API details for metrics purpose
-            registerEvent('search', {
+            this.registerEvent('search', {
                 api,
                 apiVersion
             })
@@ -115,7 +115,7 @@ class OCAPISettings {
 
         this.$cache.copyToClipboardBtn.on('click', e => {
             // Register GA event
-            registerEvent('copy', {})
+            this.registerEvent('copy', {})
             navigator.clipboard.writeText(this.$cache.ocapiSettingsTextarea.val())
         })
 
@@ -144,7 +144,7 @@ class OCAPISettings {
             }
 
             // Register GA event
-            registerEvent('alltoggle', {})
+            this.registerEvent('alltoggle', {})
 
             this.handleCheckboxChange(this.$cache.apiTree)
             $target.toggleClass('slds-is-pressed')
@@ -172,7 +172,7 @@ class OCAPISettings {
             }
 
             // Register GA event
-            registerEvent('wildcardtoggle', {})
+            this.registerEvent('wildcardtoggle', {})
 
             $target.toggleClass('slds-is-pressed')
             $target.prop('aria-pressed', $target.hasClass('slds-is-pressed'))
@@ -207,7 +207,7 @@ class OCAPISettings {
         var treeSelector = '#' + $this.attr('aria-controls');
 
         // Register GA event
-        registerEvent('filter', {
+        this.registerEvent('filter', {
             value
         })
 
