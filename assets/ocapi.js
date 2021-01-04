@@ -138,13 +138,18 @@ class OCAPISettings {
             if ($target.hasClass('slds-is-pressed')) {
                 // Toggle off all paths and methods
                 this.$cache.apiTree.find('.slds-checkbox input[type="checkbox"]').prop('checked', false)
+                // Register GA event
+                this.registerEvent('alltoggle', {
+                    enabled: false
+                })
             } else {
                 // Toggle on all paths and methods
                 this.$cache.apiTree.find('[role="treeitem"]:visible .slds-checkbox input[type="checkbox"]').prop('checked', true)
+                // Register GA event
+                this.registerEvent('alltoggle', {
+                    enabled: true
+                })
             }
-
-            // Register GA event
-            this.registerEvent('alltoggle', {})
 
             this.handleCheckboxChange(this.$cache.apiTree)
             $target.toggleClass('slds-is-pressed')
@@ -163,16 +168,21 @@ class OCAPISettings {
                 // Toggle off all paths and methods
                 this.ocapiSettings.clients = []
                 this.fillOcapiSettingsTextArea()
+                // Register GA event
+                this.registerEvent('wildcardtoggle', {
+                    enabled: false
+                })
             } else {
                 // Toggle on all paths and methods
                 let clientObj = this.client();
                 clientObj.resources.push(this.wildcardObject)
                 this.upsertOcapiSettings(clientObj)
                 this.fillOcapiSettingsTextArea()
+                // Register GA event
+                this.registerEvent('wildcardtoggle', {
+                    enabled: true
+                })
             }
-
-            // Register GA event
-            this.registerEvent('wildcardtoggle', {})
 
             $target.toggleClass('slds-is-pressed')
             $target.prop('aria-pressed', $target.hasClass('slds-is-pressed'))
