@@ -89,7 +89,7 @@
                         <div class="slds-form-element slds-form-element_horizontal">
                             <label class="slds-form-element__label" for="host">Instance Hostname</label>
                             <div class="slds-form-element__control">
-                                <input type="text" id="host" placeholder="demo-ocapi.demandware.net" value="demo-ocapi.demandware.net" class="slds-input" />
+                                <input type="text" id="host" placeholder="demo-ocapi.demandware.net" class="slds-input" />
                             </div>
                         </div>
                         <div class="slds-form-element slds-form-element_horizontal">
@@ -220,5 +220,13 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="/assets/ocapi.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js');
+            });
+        }
+    </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ class OCAPISettings {
         write_attributes: '',
         resource_id: '/**'
     }
+    LOCAL_STORAGE_HOST_KEY = 'ocapi_settings_host'
 
     constructor() {
         this.initialize()
@@ -50,6 +51,7 @@ class OCAPISettings {
         this.toggleErrorInForm(this.$cache.apiForm.api, false)
         this.$cache.spinnerApiForm.hide()
         this.$cache.apiContent.hide()
+        this.$cache.apiForm.host.val(localStorage.getItem(this.LOCAL_STORAGE_HOST_KEY) || 'demo-ocapi.demandware.net')
     }
 
     initializeEvents() {
@@ -83,6 +85,10 @@ class OCAPISettings {
                         _v: response.info.version,
                         clients: []
                     }
+
+                    // Save host for future use in the local storage
+                    localStorage.setItem(this.LOCAL_STORAGE_HOST_KEY, host)
+
                     return response.paths
                 })
                 .then(paths => this.constructPathsHTML(paths))

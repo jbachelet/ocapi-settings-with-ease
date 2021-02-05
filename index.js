@@ -30,6 +30,9 @@ app.get('/', (req, res) => res.render('index', {
     googleAnalyticsTagID: process.env.GA_TAG_ID
 }))
 
+app.get('/manifest.json', (req, res) => res.sendFile(path.join(__dirname, '/src/manifest.json')))
+app.get('/service-worker.js', (req, res) => res.sendFile(path.join(__dirname, '/src/service-worker.js')))
+
 app.post('/apis', (req, res) => {
     fetchEndpoints(
         req.body.host,
@@ -38,7 +41,6 @@ app.post('/apis', (req, res) => {
         req.body.api,
         req.body.apiVersion
     ).then(paths => res.send(JSON.stringify(paths))).catch(e => {
-        console.log('fetchEndpoints:', e)
         res.send(JSON.stringify({
             success: false,
             error: JSON.stringify(e)
@@ -59,7 +61,6 @@ function fetchEndpoints(host, clientId, clientSecret, apiName, apiVersion) {
         promise = promise.then(apiURL => getVersion(apiURL, apiVersion))
         promise = promise.then(apiURL => getPaths(apiURL))
         promise = promise.then(response => {
-            console.log('getPaths:', response)
             if (!response.paths) {
                 reject(`Failed to find paths in the ${apiName} API. Please ensure you allowed at least one endpoint for the ${client_id} client ID on the ${host} instance.`)
                 return
@@ -109,7 +110,6 @@ function authenticate(clientID, clientSecret) {
 function getAPI(host, apiName) {
     return new Promise((resolve, reject) => {
         performRequest(defaultRequestOptions(baseURL(host))).then(response => {
-            console.log('getAPI: ', response)
             const api = response.apis.find(api => api.name === apiName)
 
             if (api) {
@@ -125,7 +125,6 @@ function getAPI(host, apiName) {
 function getVersion(apiURL, apiVersion) {
     return new Promise((resolve, reject) => {
         performRequest(defaultRequestOptions(apiURL)).then(response => {
-            console.log('getVersion: ', response)
             const version = apiVersion
                 ? response.versions.find(version => version.name === apiVersion || version.status === apiVersion)
                 : response.versions.find(version => version.status === 'current')
