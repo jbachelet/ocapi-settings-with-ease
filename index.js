@@ -68,7 +68,7 @@ function fetchEndpoints(host, clientId, clientSecret, apiName, apiVersion) {
 
             transformedPaths = {}
             Object.keys(response.paths).forEach(pathKey => {
-                newPathKey = pathKey.replace(/{\S+}/gi, '*')
+                newPathKey = pathKey.replace(/{\w+}/gi, '*')
                 transformedPaths[newPathKey] = response.paths[pathKey]
             })
 
